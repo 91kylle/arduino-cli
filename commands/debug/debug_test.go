@@ -17,13 +17,13 @@ package debug
 
 import (
 	"fmt"
+	"strings"
+	"testing"
+
 	"github.com/arduino/arduino-cli/arduino/cores/packagemanager"
-	rpc "github.com/arduino/arduino-cli/rpc/common"
 	dbg "github.com/arduino/arduino-cli/rpc/debug"
 	"github.com/arduino/go-paths-helper"
 	"github.com/stretchr/testify/assert"
-	"strings"
-	"testing"
 )
 
 var customHardware = paths.New("testdata", "custom_hardware")
@@ -37,7 +37,7 @@ func TestGetCommandLine(t *testing.T) {
 	pm.LoadHardwareFromDirectory(dataDir)
 
 	req := &dbg.DebugConfigReq{
-		Instance:   &rpc.Instance{Id: 1},
+		Instance:   &dbg.Instance{Id: 1},
 		Fqbn:       "arduino-test:samd:arduino_zero_edbg",
 		SketchPath: sketchPath,
 		Port:       "none",
@@ -61,7 +61,7 @@ func TestGetCommandLine(t *testing.T) {
 
 	// for other samd boards
 	req2 := &dbg.DebugConfigReq{
-		Instance:   &rpc.Instance{Id: 1},
+		Instance:   &dbg.Instance{Id: 1},
 		Fqbn:       "arduino-test:samd:mkr1000",
 		SketchPath: sketchPath,
 		Port:       "none",
