@@ -36,6 +36,7 @@ func TestGetCommandLine(t *testing.T) {
 	pm.LoadHardwareFromDirectory(customHardware)
 	pm.LoadHardwareFromDirectory(dataDir)
 
+	// Arduino Zero has an integrated debugger port, anc it could be debugged directly using USB
 	req := &dbg.DebugConfigReq{
 		Instance:   &dbg.Instance{Id: 1},
 		Fqbn:       "arduino-test:samd:arduino_zero_edbg",
@@ -44,6 +45,9 @@ func TestGetCommandLine(t *testing.T) {
 	}
 	packageName := strings.Split(req.Fqbn, ":")[0]
 	processor := strings.Split(req.Fqbn, ":")[1]
+	// This boardFamily variable is necessary for this particular board as it is represented in the core as 2 separated
+	// boards, to expose the programming port and the debug (edbg) port. So we point at the same openocd configuration
+	// variant for upload in both cases
 	boardFamily := "arduino_zero"
 
 	goldCommand := []string{
@@ -59,7 +63,8 @@ func TestGetCommandLine(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, goldCommand, command)
 
-	// for other samd boards
+	// Other samd boards such as mkr1000 can be debugged using an external tool such as Atmel ICE connected to
+	// the board debug port
 	req2 := &dbg.DebugConfigReq{
 		Instance:   &dbg.Instance{Id: 1},
 		Fqbn:       "arduino-test:samd:mkr1000",
