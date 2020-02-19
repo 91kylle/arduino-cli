@@ -66,15 +66,15 @@ func TestGetCommandLine(t *testing.T) {
 		SketchPath: sketchPath,
 		Port:       "none",
 	}
-	packageName2 := strings.Split(req.Fqbn, ":")[0]
-	processor2 := strings.Split(req.Fqbn, ":")[1]
-	name2 := strings.Split(req.Fqbn, ":")[2]
+	packageName2 := strings.Split(req2.Fqbn, ":")[0]
+	processor2 := strings.Split(req2.Fqbn, ":")[1]
+	name2 := strings.Split(req2.Fqbn, ":")[2]
 
 	goldCommand2 := []string{
-		fmt.Sprintf("%s/%s/tools/arm-none-eabi-gcc/7-2017q4/bin//arm-none-eabi-gdb", dataDir, packageName),
+		fmt.Sprintf("%s/%s/tools/arm-none-eabi-gcc/7-2017q4/bin//arm-none-eabi-gdb", dataDir, packageName2),
 		fmt.Sprintf("-ex"),
-		fmt.Sprintf("target extended-remote | %s/%s/tools/openocd/0.10.0-arduino7/bin/openocd", dataDir, packageName) + " " +
-			fmt.Sprintf("-s \"%s/%s/tools/openocd/0.10.0-arduino7/share/openocd/scripts/\"", dataDir, packageName) + " " +
+		fmt.Sprintf("target extended-remote | %s/%s/tools/openocd/0.10.0-arduino7/bin/openocd", dataDir, packageName2) + " " +
+			fmt.Sprintf("-s \"%s/%s/tools/openocd/0.10.0-arduino7/share/openocd/scripts/\"", dataDir, packageName2) + " " +
 			fmt.Sprintf("--file \"%s/%s/%s/variants/%s/openocd_scripts/arduino_zero.cfg\" -c \"gdb_port pipe\" -c \"telnet_port 0\" -c init -c halt", customHardware, packageName2, processor2, name2),
 		fmt.Sprintf("%s/%s.%s.elf", sketchPath, sketch, strings.ReplaceAll(req2.Fqbn, ":", ".")),
 	}
